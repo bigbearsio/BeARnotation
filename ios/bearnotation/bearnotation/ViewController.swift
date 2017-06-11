@@ -105,15 +105,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     func loadObjectPlane2() {
-        groupNode2 = SCNNode()
         
-        groupNode2!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
-                                         loc: SCNVector3(x: -2.0, y:-1.4, z:-5),
+        groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
+                                         loc: planeCenter2,
                                          scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
-        groupNode2!.addChildNode(loadNode(file: "art.scnassets/ship.scn",
-                                         loc: SCNVector3(x: 10, y:7, z:-3),
-                                         scale: SCNVector3(x: 20.0, y:20.0, z:20.0)))
-        sceneView.scene.rootNode.addChildNode(groupNode2!)
+        
+        sceneView.scene.rootNode.addChildNode(groupNode!)
     }
     
     func loadNode(file: String, loc:SCNVector3, scale: SCNVector3) -> SCNNode {
@@ -146,6 +143,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         if(position != nil) {
             FirstPlaneTrigger(position: position!)
+            SecondPlaneTrigger(position: position!)
         }
     }
     
@@ -172,7 +170,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             if(groupNode2 == nil) {
                 debugPrint(x,z,planeCenter2)
-                loadObjectPlane1()
+                loadObjectPlane2()
             }
         }
     }
