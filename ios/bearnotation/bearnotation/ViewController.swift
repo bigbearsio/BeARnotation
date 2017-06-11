@@ -22,6 +22,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let planeSize: Float = 1
     let planeSizeCGFloat: CGFloat = 1
     let planeCenter = SCNVector3(x: 0, y: -1.5, z: -2)
+    let planeCenter2 = SCNVector3(x: 0.5, y: -1.5, z: -2)
     
     func setupDebug() {
         // Set appearance of debug output panel
@@ -36,39 +37,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         debug = DebugView(frame: CGRect.zero)
         self.view.addSubview(debug)
         
-        
-        //let light = SCNLight()
-        //light.type = SCNLight.LightType.omni
-        //let lightNode = SCNNode()
-        //lightNode.light = light
-        //lightNode.position = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
-        
-        //sceneView.scene.rootNode.addChildNode(lightNode)
-        
         /// Set the view's delegate
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
         
-        // Create a new scene
-        //let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        //sceneView.scene = scene
-        
         //This is the marker
-        let planeGeometry = SCNPlane(width: planeSizeCGFloat, height: planeSizeCGFloat)
-        let planeNode = SCNNode(geometry: planeGeometry)
-        planeNode.eulerAngles = SCNVector3(x: GLKMathDegreesToRadians(-90), y: 0, z: 0)
-        planeNode.position = planeCenter
+        let planeNode = createPlane(center: planeCenter, size: planeSizeCGFloat, color: UIColor.green)
         
-        let greenMaterial = SCNMaterial()
-        greenMaterial.diffuse.contents = UIColor.green
-        greenMaterial.transparency = 0.5
-        planeGeometry.materials = [greenMaterial]
+        let planeNode2 = createPlane(center: planeCenter2, size: planeSizeCGFloat, color: UIColor.red)
         
         sceneView.scene.rootNode.addChildNode(planeNode)
+        sceneView.scene.rootNode.addChildNode(planeNode2)
         
         tap.numberOfTapsRequired = 2
         tap.addTarget(self, action: #selector(self.removeObj))
@@ -78,6 +59,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         debugPrint("add guesture")
     }
     
+    func createPlane(center: SCNVector3, size :CGFloat, color: UIColor) -> SCNNode {
+        let planeGeometry = SCNPlane(width: size, height: size)
+        let planeNode = SCNNode(geometry: planeGeometry)
+        planeNode.eulerAngles = SCNVector3(x: GLKMathDegreesToRadians(-90), y: 0, z: 0)
+        planeNode.position = center
+        
+        let greenMaterial = SCNMaterial()
+        greenMaterial.diffuse.contents = color
+        greenMaterial.transparency = 0.5
+        planeGeometry.materials = [greenMaterial]
+        
+        return planeNode
+    }
+    
     @objc func removeObj() {
         groupNode?.removeFromParentNode()
         groupNode = nil
@@ -85,15 +80,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func addObj() {
         groupNode = SCNNode()
-        let loadingScene = SCNScene(named: "art.scnassets/Lowpoly_tree_sample.dae")!
+        
+        groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
+                                         loc: SCNVector3(x: 0, y:-1.4, z:-4),
+                                         scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
+        sceneView.scene.rootNode.addChildNode(groupNode!)
+    }
+    
+    func loadNode(file: String, loc:SCNVector3, scale: SCNVector3) -> SCNNode {
+        let loadingObjNode = SCNNode()
+        
+        let loadingScene = SCNScene(named: file)!
         let nodeArray = loadingScene.rootNode.childNodes
-        groupNode!.position = SCNVector3(x: 0, y:-1.4, z:-4)
-        groupNode!.scale = SCNVector3(x: 0.07, y:0.07, z:0.07)
+        groupNode!.position = loc
+        groupNode!.scale = scale
         
         for childNode in nodeArray {
             groupNode!.addChildNode(childNode as SCNNode)
         }
-        sceneView.scene.rootNode.addChildNode(groupNode!)
+        
+        return loadingObjNode
     }
     
     var groupNode: SCNNode? = nil
@@ -105,6 +111,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         dateFormatter.timeZone = TimeZone(abbreviation: "GMT") //Set timezone that you want
         dateFormatter.locale = NSLocale.current
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" //Specify your format that you want
+        
         let strDate = dateFormatter.string(from: unixTimestamp as Date)
         
         
@@ -123,8 +130,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 }
             }
         }
-        
-        //debugPrint("rendered at" + strDate)
     }
     
     @objc func addScene() {
