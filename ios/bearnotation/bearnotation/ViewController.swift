@@ -90,6 +90,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         dateFormatter.timeZone = TimeZone(abbreviation: "GMT") //Set timezone that you want
         dateFormatter.locale = NSLocale.current
         dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss" //Specify your format that you want
+        
         let strDate = dateFormatter.string(from: unixTimestamp as Date)
         
         debugPrint(sceneView.session.currentFrame?.camera.transform.columns.3)
@@ -108,8 +109,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 }
             }
         }
-        
-        //debugPrint("rendered at" + strDate)
     }
     
     @objc func addScene() {
