@@ -96,11 +96,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         groupNode = SCNNode()
         
         groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
-                                         loc: SCNVector3(x: -1.0, y:-1.4, z:-4),
-                                         scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
-        groupNode!.addChildNode(loadNode(file: "art.scnassets/ship.scn",
-                                         loc: SCNVector3(x: 9, y:7, z:-4),
-                                         scale: SCNVector3(x: 20.0, y:20.0, z:20.0)))
+                                         loc: SCNVector3(x: +3.0, y:-1.4, z:-3.5),
+                                         scale: SCNVector3(x: 0.07, y:0.07, z:0.07),
+                                         rotation: SCNVector3(x:0, y: GLKMathDegreesToRadians(-90), z:0)))
+        groupNode!.addChildNode(loadNode(file: "art.scnassets/billboard.dae",
+                                         loc: SCNVector3(x: -20, y:2.5, z:4),
+                                         scale: SCNVector3(x: 0.5, y:0.5, z:0.5),
+                                         rotation: SCNVector3(x: 0, y: 0, z: 0)))
+        //GLKMathDegreesToRadians(-90)
         sceneView.scene.rootNode.addChildNode(groupNode!)
     }
     
@@ -113,13 +116,14 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene.rootNode.addChildNode(groupNode!)
     }
     
-    func loadNode(file: String, loc:SCNVector3, scale: SCNVector3) -> SCNNode {
+    func loadNode(file: String, loc:SCNVector3, scale: SCNVector3, rotation: SCNVector3=SCNVector3(x:0, y:0, z:0)) -> SCNNode {
         let loadingObjNode = SCNNode()
         
         let loadingScene = SCNScene(named: file)!
         let nodeArray = loadingScene.rootNode.childNodes
         loadingObjNode.position = loc
         loadingObjNode.scale = scale
+        loadingObjNode.eulerAngles = rotation
         
         for childNode in nodeArray {
             loadingObjNode.addChildNode(childNode as SCNNode)
