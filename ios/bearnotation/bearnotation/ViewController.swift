@@ -27,7 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Fucking hackathon code
     // for planeCenter2
     // x = planeSizeCGFloat + 0.5
-    let planeCenter2 = SCNVector3(x: 1.5, y: -1.5, z: -3 )
+    let planeCenter2 = SCNVector3(x: 1.5, y: -1.5, z: -4 )
     
     func setupDebug() {
         // Set appearance of debug output panel
