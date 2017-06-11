@@ -79,11 +79,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @objc func removeObj() {
+        // Remove node from trigger #1
         groupNode?.removeFromParentNode()
         groupNode = nil
+        
+        // Remove node from trigger #2
+        groupNode2?.removeFromParentNode()
+        groupNode2 = nil
     }
     
     var groupNode: SCNNode? = nil
+    // OH FUCKING HACK AGAIN, WTF
+    var groupNode2: SCNNode? = nil
     
     func loadObjectPlane1() {
         groupNode = SCNNode()
@@ -95,6 +102,18 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                          loc: SCNVector3(x: 9, y:7, z:-4),
                                          scale: SCNVector3(x: 20.0, y:20.0, z:20.0)))
         sceneView.scene.rootNode.addChildNode(groupNode!)
+    }
+    
+    func loadObjectPlane2() {
+        groupNode2 = SCNNode()
+        
+        groupNode2!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
+                                         loc: SCNVector3(x: -2.0, y:-1.4, z:-5),
+                                         scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
+        groupNode2!.addChildNode(loadNode(file: "art.scnassets/ship.scn",
+                                         loc: SCNVector3(x: 10, y:7, z:-3),
+                                         scale: SCNVector3(x: 20.0, y:20.0, z:20.0)))
+        sceneView.scene.rootNode.addChildNode(groupNode2!)
     }
     
     func loadNode(file: String, loc:SCNVector3, scale: SCNVector3) -> SCNNode {
@@ -139,6 +158,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             if(groupNode == nil) {
                 debugPrint(x,z,planeCenter)
+                loadObjectPlane1()
+            }
+        }
+    }
+    
+    func SecondPlaneTrigger(position: simd_float4) {
+        let x = position.x
+        let z = position.z
+        
+        if (x > (planeCenter2.x - planeSize/2) && x < (planeCenter2.x + planeSize/2) &&
+            z > (planeCenter2.z - planeSize/2) && z < (planeCenter2.z + planeSize/2)) {
+            
+            if(groupNode2 == nil) {
+                debugPrint(x,z,planeCenter2)
                 loadObjectPlane1()
             }
         }
