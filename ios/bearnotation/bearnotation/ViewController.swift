@@ -27,7 +27,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // Fucking hackathon code
     // for planeCenter2
     // x = planeSizeCGFloat + 0.5
-    let planeCenter2 = SCNVector3(x: 1.5, y: -1.5, z: -2 )
+    let planeCenter2 = SCNVector3(x: 1.5, y: -1.5, z: -3 )
     
     func setupDebug() {
         // Set appearance of debug output panel
@@ -123,16 +123,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let position = sceneView.session.currentFrame?.camera.transform.columns.3;
         
         if(position != nil) {
-            let x = position!.x
-            let z = position!.z
+            FirstPlaneTrigger(position: position!)
+        }
+    }
+    
+    func FirstPlaneTrigger(position: simd_float4) {
+        let x = position.x
+        let z = position.z
+        
+        if (x > (planeCenter.x - planeSize/2) && x < (planeCenter.x + planeSize/2) &&
+            z > (planeCenter.z - planeSize/2) && z < (planeCenter.z + planeSize/2)) {
             
-            if (x > (planeCenter.x - planeSize/2) && x < (planeCenter.x + planeSize/2) &&
-                z > (planeCenter.z - planeSize/2) && z < (planeCenter.z + planeSize/2)) {
-                
-                if(groupNode == nil) {
-                    debugPrint(x,z,planeCenter)
-                    addObj()
-                }
+            if(groupNode == nil) {
+                debugPrint(x,z,planeCenter)
+                addObj()
             }
         }
     }
