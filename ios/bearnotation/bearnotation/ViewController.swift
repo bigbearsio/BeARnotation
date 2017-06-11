@@ -21,7 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     let planeSize: Float = 1
     let planeSizeCGFloat: CGFloat = 1
-    let planeCenter = SCNVector3(x: 0, y: -1.5, z: -1)
+    let planeCenter = SCNVector3(x: 0, y: -1.5, z: -2)
     
     func setupDebug() {
         // Set appearance of debug output panel
@@ -46,11 +46,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let planeGeometry = SCNPlane(width: planeSizeCGFloat, height: planeSizeCGFloat)
         let planeNode = SCNNode(geometry: planeGeometry)
         planeNode.eulerAngles = SCNVector3(x: GLKMathDegreesToRadians(-90), y: 0, z: 0)
-        planeNode.position = SCNVector3(x: 0, y: -1.5, z: -2)
+        planeNode.position = planeCenter
         
         let greenMaterial = SCNMaterial()
         greenMaterial.diffuse.contents = UIColor.green
-        greenMaterial.transparency = 0.3
+        greenMaterial.transparency = 0.5
         planeGeometry.materials = [greenMaterial]
         
         sceneView.scene.rootNode.addChildNode(planeNode)
@@ -64,7 +64,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @objc func removeObj() {
-        groupNode!.removeFromParentNode()
+        groupNode?.removeFromParentNode()
         groupNode = nil
     }
     
@@ -72,8 +72,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         groupNode = SCNNode()
         let loadingScene = SCNScene(named: "art.scnassets/Lowpoly_tree_sample.dae")!
         let nodeArray = loadingScene.rootNode.childNodes
-        groupNode!.position = SCNVector3(x: 0, y:-1.4, z:-2)
-        groupNode!.scale = SCNVector3(x: 0.05, y:0.05, z:0.05)
+        groupNode!.position = SCNVector3(x: 0, y:-1.4, z:-4)
+        groupNode!.scale = SCNVector3(x: 0.07, y:0.07, z:0.07)
         
         for childNode in nodeArray {
             groupNode!.addChildNode(childNode as SCNNode)
@@ -93,7 +93,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let strDate = dateFormatter.string(from: unixTimestamp as Date)
         
-        debugPrint(sceneView.session.currentFrame?.camera.transform.columns.3)
         
         let position = sceneView.session.currentFrame?.camera.transform.columns.3;
         
@@ -105,6 +104,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 z > (planeCenter.z - planeSize/2) && z < (planeCenter.z + planeSize/2)) {
                 
                 if(groupNode == nil) {
+                    debugPrint(x,z,planeCenter)
                     addObj()
                 }
             }
