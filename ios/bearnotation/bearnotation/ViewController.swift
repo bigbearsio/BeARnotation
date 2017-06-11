@@ -83,12 +83,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         groupNode = nil
     }
     
+    var groupNode: SCNNode? = nil
+    
     func addObj() {
         groupNode = SCNNode()
         
         groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
-                                         loc: SCNVector3(x: 0, y:-1.4, z:-4),
+                                         loc: SCNVector3(x: -1.0, y:-1.4, z:-4),
                                          scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
+        groupNode!.addChildNode(loadNode(file: "art.scnassets/ship.scn",
+                                         loc: SCNVector3(x: 9, y:7, z:-4),
+                                         scale: SCNVector3(x: 20.0, y:20.0, z:20.0)))
         sceneView.scene.rootNode.addChildNode(groupNode!)
     }
     
@@ -97,17 +102,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let loadingScene = SCNScene(named: file)!
         let nodeArray = loadingScene.rootNode.childNodes
-        groupNode!.position = loc
-        groupNode!.scale = scale
+        loadingObjNode.position = loc
+        loadingObjNode.scale = scale
         
         for childNode in nodeArray {
-            groupNode!.addChildNode(childNode as SCNNode)
+            loadingObjNode.addChildNode(childNode as SCNNode)
         }
         
         return loadingObjNode
     }
     
-    var groupNode: SCNNode? = nil
     
     func renderer(_ renderer: SCNSceneRenderer, updateAtTime time: TimeInterval) {
         let timeInterval = NSDate().timeIntervalSince1970
@@ -119,7 +123,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let strDate = dateFormatter.string(from: unixTimestamp as Date)
         
-        
         let position = sceneView.session.currentFrame?.camera.transform.columns.3;
         
         if(position != nil) {
@@ -130,7 +133,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                 z > (planeCenter.z - planeSize/2) && z < (planeCenter.z + planeSize/2)) {
                 
                 if(groupNode == nil) {
-                    debugPrint(x,z,planeCenter)
                     addObj()
                 }
             }
