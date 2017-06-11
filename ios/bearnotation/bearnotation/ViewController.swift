@@ -19,10 +19,15 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     let tap = UITapGestureRecognizer()
     var debug : DebugView! = nil
     
+    
     let planeSize: Float = 1
     let planeSizeCGFloat: CGFloat = 1
     let planeCenter = SCNVector3(x: 0, y: -1.5, z: -2)
-    let planeCenter2 = SCNVector3(x: 0.5, y: -1.5, z: -2)
+    
+    // Fucking hackathon code
+    // for planeCenter2
+    // x = planeSizeCGFloat + 0.5
+    let planeCenter2 = SCNVector3(x: 1.5, y: -1.5, z: -2 )
     
     func setupDebug() {
         // Set appearance of debug output panel
