@@ -100,9 +100,9 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                          scale: SCNVector3(x: 0.07, y:0.07, z:0.07),
                                          rotation: SCNVector3(x:0, y: GLKMathDegreesToRadians(-90), z:0)))
         groupNode!.addChildNode(loadNode(file: "art.scnassets/billboard.dae",
-                                         loc: SCNVector3(x: -20, y:2.5, z:4),
-                                         scale: SCNVector3(x: 0.5, y:0.5, z:0.5),
-                                         rotation: SCNVector3(x: 0, y: 0, z: 0)))
+                                         loc: SCNVector3(x: -6, y:-2.5, z:0.5),
+                                         scale: SCNVector3(x: 0.005, y:0.005, z:0.005),
+                                         rotation: SCNVector3(x: 0, y: GLKMathDegreesToRadians(-200), z: 0)))
         //GLKMathDegreesToRadians(-90)
         sceneView.scene.rootNode.addChildNode(groupNode!)
     }
