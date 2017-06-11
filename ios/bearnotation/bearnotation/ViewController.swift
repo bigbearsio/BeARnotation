@@ -85,7 +85,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var groupNode: SCNNode? = nil
     
-    func addObj() {
+    func loadObjectPlane1() {
         groupNode = SCNNode()
         
         groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
@@ -139,7 +139,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             
             if(groupNode == nil) {
                 debugPrint(x,z,planeCenter)
-                addObj()
+                loadObjectPlane1()
             }
         }
     }
