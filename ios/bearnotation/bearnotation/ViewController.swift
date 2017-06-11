@@ -85,15 +85,26 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     func addObj() {
         groupNode = SCNNode()
-        let loadingScene = SCNScene(named: "art.scnassets/Lowpoly_tree_sample.dae")!
+        
+        groupNode!.addChildNode(loadNode(file: "art.scnassets/Lowpoly_tree_sample.dae",
+                                         loc: SCNVector3(x: 0, y:-1.4, z:-4),
+                                         scale: SCNVector3(x: 0.07, y:0.07, z:0.07)))
+        sceneView.scene.rootNode.addChildNode(groupNode!)
+    }
+    
+    func loadNode(file: String, loc:SCNVector3, scale: SCNVector3) -> SCNNode {
+        let loadingObjNode = SCNNode()
+        
+        let loadingScene = SCNScene(named: file)!
         let nodeArray = loadingScene.rootNode.childNodes
-        groupNode!.position = SCNVector3(x: 0, y:-1.4, z:-4)
-        groupNode!.scale = SCNVector3(x: 0.07, y:0.07, z:0.07)
+        groupNode!.position = loc
+        groupNode!.scale = scale
         
         for childNode in nodeArray {
             groupNode!.addChildNode(childNode as SCNNode)
         }
-        sceneView.scene.rootNode.addChildNode(groupNode!)
+        
+        return loadingObjNode
     }
     
     var groupNode: SCNNode? = nil
