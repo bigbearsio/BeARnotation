@@ -36,26 +36,11 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         debug = DebugView(frame: CGRect.zero)
         self.view.addSubview(debug)
         
-        
-        //let light = SCNLight()
-        //light.type = SCNLight.LightType.omni
-        //let lightNode = SCNNode()
-        //lightNode.light = light
-        //lightNode.position = SCNVector3(x: 1.5, y: 1.5, z: 1.5)
-        
-        //sceneView.scene.rootNode.addChildNode(lightNode)
-        
         /// Set the view's delegate
         sceneView.delegate = self
         
         // Show statistics such as fps and timing information
         sceneView.showsStatistics = true
-        
-        // Create a new scene
-        //let scene = SCNScene(named: "art.scnassets/ship.scn")!
-        
-        // Set the scene to the view
-        //sceneView.scene = scene
         
         //This is the marker
         let planeGeometry = SCNPlane(width: planeSizeCGFloat, height: planeSizeCGFloat)
